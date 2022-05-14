@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<persistence xmlns="https://jakarta.ee/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd"
+             version="3.0">
+    <persistence-unit name="main">
+        <class>kz.runtime.catalog.jpa.entity.Category</class>
+        <class>kz.runtime.catalog.jpa.entity.Option</class>
+        <class>kz.runtime.catalog.jpa.entity.Product</class>
+        <class>kz.runtime.catalog.jpa.entity.Value</class>
+        <properties>
+            <property name="jakarta.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/postgres"/>
+            <property name="jakarta.persistence.jdbc.user" value="postgres"/>
+            <property name="jakarta.persistence.jdbc.password" value="1111"/>
+        </properties>
+    </persistence-unit>
+</persistence>
