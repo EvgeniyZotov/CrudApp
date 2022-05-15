@@ -20,12 +20,6 @@ public class Value {
 
     private String value;
 
-    public Value(Product product, Option option, String value) {
-        this.product = product;
-        this.option = option;
-        this.value = value;
-    }
-
     public Value() {
     }
 

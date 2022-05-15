@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "options", schema = "public", catalog = "postgres")
+@Table(name = "options")
 
 public class Option {
     @Id
@@ -22,13 +22,6 @@ public class Option {
     private String name;
 
     public Option() {
-    }
-
-    public Option(Long id, Category category, List<Value> values, String name) {
-        this.id = id;
-        this.category = category;
-        this.values = values;
-        this.name = name;
     }
 
     public Long getId() {

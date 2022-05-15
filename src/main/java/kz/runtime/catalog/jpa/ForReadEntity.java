@@ -23,7 +23,7 @@ public class ForReadEntity {
             TypedQuery<Category> categoryTypedQuery = em.createQuery(queryCategoryName, Category.class);
             List<Category> categories = categoryTypedQuery.getResultList();
             for (int i = 0; i < categories.size(); i++) {
-                System.out.printf("- %s [%d]\n", categories.get(i).getName(), categories.get(i).getId());
+                System.out.printf("- %s [%d]\n", categories.get(i).getName(), i);
             }
         } catch (Exception e) {
             em.getTransaction().rollback();
@@ -40,7 +40,7 @@ public class ForReadEntity {
             TypedQuery<Option> optionsTypedQuery = em.createQuery(queryOptionName, Option.class);
             List<Option> options = optionsTypedQuery.getResultList();
             for(int i = 0; i < options.size(); i++) {
-                System.out.printf("- %s [%d]\n", options.get(i).getName(), options.get(i).getId());
+                System.out.printf("- %s [%d]\n", options.get(i).getName(), i);
             }
         } catch (Exception e) {
             em.getTransaction().rollback();
@@ -57,7 +57,7 @@ public class ForReadEntity {
             TypedQuery<Product> productsTypedQuery = em.createQuery(queryProductName, Product.class);
             List<Product> products = productsTypedQuery.getResultList();
             for(int i = 0; i < products.size(); i++) {
-                System.out.printf("- %s [%d]\n", products.get(i).getName(), products.get(i).getId());
+                System.out.printf("- %s [%d]\n", products.get(i).getName(), i);
             }
         } catch (Exception e) {
             em.getTransaction().rollback();
@@ -74,7 +74,7 @@ public class ForReadEntity {
             TypedQuery<Value> valueTypedQuery = em.createQuery(queryValuesName, Value.class);
             List<Value> values = valueTypedQuery.getResultList();
             for(int i = 0; i < values.size(); i++) {
-                System.out.printf("- %s [%d]\n", values.get(i).getValue(), values.get(i).getId());
+                System.out.printf("- %s [%d]\n", values.get(i).getValue(), i);
             }
         } catch (Exception e) {
             em.getTransaction().rollback();
@@ -89,38 +89,20 @@ public class ForReadEntity {
         try {
             em.getTransaction().begin();
             System.out.println("===============================\n          Table Category");
-
-            TypedQuery<Category> categoryTypedQuery = em.createQuery(queryCategoryName, Category.class);
-            List<Category> categories = categoryTypedQuery.getResultList();
-            for (int i = 0; i < categories.size(); i++) {
-                System.out.printf("- %s [%d]\n", categories.get(i).getName(), categories.get(i).getId());
-            }
+              ReadEntityCategory();
             System.out.println("===============================\n");
 
             System.out.println("===============================\n          Table Option");
-            TypedQuery<Option> optionsTypedQuery = em.createQuery(queryOptionName, Option.class);
-            List<Option> options = optionsTypedQuery.getResultList();
-            for(int i = 0; i < options.size(); i++) {
-                System.out.printf("- %s [%d]\n", options.get(i).getName(), options.get(i).getId());
-            }
+                ReadEntityOptions();
             System.out.println("===============================\n");
 
             System.out.println("===============================\n          Table Product");
-            TypedQuery<Product> productsTypedQuery = em.createQuery(queryProductName, Product.class);
-            List<Product> products = productsTypedQuery.getResultList();
-            for(int i = 0; i < products.size(); i++) {
-                System.out.printf("- %s [%d]\n", products.get(i).getName(), products.get(i).getId());
-            }
+                ReadEntityProducts();
             System.out.println("===============================\n");
 
             System.out.println("===============================\n          Table Value");
-            TypedQuery<Value> valueTypedQuery = em.createQuery(queryValuesName, Value.class);
-            List<Value> values = valueTypedQuery.getResultList();
-            for(int i = 0; i < values.size(); i++) {
-                System.out.printf("- %s [%d]\n", values.get(i).getValue(), values.get(i).getId());
-            }
+                ReadEntityValues();
             System.out.println("===============================\n");
-
         } catch (Exception e) {
             em.getTransaction().rollback();
             e.printStackTrace();

@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "categories", schema = "public", catalog = "postgres")
+@Table(name = "categories")
 
 
 public class Category {
@@ -22,13 +22,6 @@ public class Category {
     private List<Product> products;
 
     public Category() {
-    }
-
-    public Category(Long id, String name, List<Option> options, List<Product> products) {
-        this.id = id;
-        this.name = name;
-        this.options = options;
-        this.products = products;
     }
 
     public Long getId() {

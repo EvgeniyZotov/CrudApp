@@ -1,6 +1,7 @@
 package kz.runtime.catalog.jpa;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
 import kz.runtime.catalog.jpa.entity.Category;
 import kz.runtime.catalog.jpa.entity.Option;
@@ -18,6 +19,7 @@ public class Operations {
 
     private final String queryCategoryName = "select c from Category c order by c.name";
     private final String queryProductName = "select p from Product p order by p.name";
+    private final String queryValue = "select v from Value v where v.product = ?1 and v.option = ?2";
 
     public void createEntity() {
         EntityManager em = JPAUtil.getEntityManagerFactory().createEntityManager();
@@ -58,7 +60,7 @@ public class Operations {
                 value.setProduct(product);
                 value.setOption(option);
                 value.setValue(valueScanner);
-                //Persist volue entity to database
+                //Persist value entity to database
                 em.persist(value);
             }
             em.getTransaction().commit();
@@ -86,6 +88,7 @@ public class Operations {
             case "3" -> readEntity.ReadEntityProducts();
             case "4" -> readEntity.ReadEntityValues();
             case "5" -> readEntity.ReadEntityAll();
+            default -> System.out.println("This table does not exist");
         }
     }
 
@@ -93,7 +96,48 @@ public class Operations {
         EntityManager em = JPAUtil.getEntityManagerFactory().createEntityManager();
         try {
             em.getTransaction().begin();
-
+            TypedQuery<Product> productTypedQuery = em.createQuery(queryProductName, Product.class);
+            List<Product> products = productTypedQuery.getResultList();
+            for (int i = 0; i < products.size(); i++) {
+                System.out.printf("- %s [%d]\n", products.get(i).getName(), products.get(i).getId());
+            }
+            System.out.println("Select ID: ");
+            String scannerID = scanner.nextLine();
+            long ID = Integer.parseInt(scannerID);
+            Product product = em.find(Product.class, ID);
+            System.out.println("Print new name");
+            String newName = scanner.nextLine();
+            if (!newName.isEmpty()) {
+                product.setName(newName);
+            }
+            System.out.println("Print new price");
+            String newPriceScanner = scanner.nextLine();
+            if(!newPriceScanner.isEmpty()) {
+                int newPrice = Integer.parseInt(newPriceScanner);
+                product.setPrice(newPrice);
+            }
+            for (Option option : product.getCategory().getOptions()) {
+                TypedQuery<Value> valueTypedQuery = em.createQuery(queryValue, Value.class);
+                valueTypedQuery.setParameter(1, product);
+                valueTypedQuery.setParameter(2, option);
+                try {
+                    Value value = valueTypedQuery.getSingleResult();
+                    System.out.printf("%s [%s]: ", option.getName(), value.getValue());
+                    String newValue = scanner.nextLine();
+                    if (!newValue.isEmpty()) {
+                        value.setValue(newValue);
+                    }
+                } catch(NoResultException e) {
+                    System.out.printf("%s: ", option.getName());
+                    String valueScanner = scanner.nextLine();
+                    Value value = new Value();
+                    value.setProduct(product);
+                    value.setOption(option);
+                    value.setValue(valueScanner);
+                    em.persist(value);
+                }
+                valueTypedQuery.getSingleResult();
+            }
             em.getTransaction().commit();
         } catch (Exception e) {
             em.getTransaction().rollback();
